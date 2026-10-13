@@ -1,0 +1,243 @@
+/* 故事画册模板 —— 水彩淡彩风
+ * 用法：复制为 book.css 并按需改配色
+ * 设计原则：
+ *   - 淡雅低饱和，大量留白，不用重边框
+ *   - 章节跨页起头，图文交错，单栏阅读宽度（约 34em）
+ *   - 印���不做裁切标记，让浏览器自然分页
+ */
+
+/* ============ 变量：改这里就能换配色 ============ */
+:root {
+  --ink:        #3d4a4a;   /* 正文墨色 —— 灰绿，比纯黑柔和 */
+  --ink-soft:   #6b7a78;   /* 次级文字 */
+  --paper:      #fdfcf8;   /* 纸底 —— 微微偏暖的米白 */
+  --paper-deep: #f5f2e8;   /* 分区块底色 */
+  --accent:     #7ba6a0;   /* 主色 —— 水彩青 */
+  --accent-warm:#c9a88a;   /* 暖色点缀 —— 陶土 */
+  --rule:       #d8d4c8;   /* 细线 */
+}
+
+/* ============ 基础 ============ */
+@page {
+  size: A4;
+  margin: 20mm 18mm 18mm;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC",
+               "SimSun", "Microsoft YaHei", serif;
+  font-size: 11.5pt;
+  line-height: 2;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ 封面 ============ */
+.cover {
+  page-break-after: always;
+  height: 245mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-art {
+  width: 100%;
+  height: 120mm;
+  object-fit: cover;
+  border-radius: 2mm;
+  margin-bottom: 12mm;
+}
+
+.cover h1 {
+  font-size: 30pt;
+  line-height: 1.45;
+  font-weight: 600;
+  margin: 0 0 6mm;
+  letter-spacing: 0.02em;
+}
+
+.cover .subtitle {
+  font-size: 13pt;
+  color: var(--ink-soft);
+  letter-spacing: 0.14em;
+  margin-bottom: 10mm;
+}
+
+.cover .meta {
+  font-size: 9.5pt;
+  color: var(--ink-soft);
+  padding-top: 6mm;
+  border-top: 1px solid var(--rule);
+  line-height: 2;
+}
+
+/* ============ 章节 ============ */
+/* 不强制每章另起一页 —— 会产生大量半空白页。
+   改为靠章节标题的 page-break-before: auto + 大间距自然分隔，
+   需要严格分章时给 .chapter 加 .chapter-break 类。 */
+.chapter {
+  margin-bottom: 16mm;
+}
+
+.chapter.chapter-break {
+  page-break-before: always;
+}
+
+.chapter:first-of-type { page-break-before: avoid; }
+
+.chapter-num {
+  font-size: 9pt;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 3mm;
+}
+
+.chapter h2 {
+  font-size: 18pt;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0 0 9mm;
+  padding-bottom: 4mm;
+  border-bottom: 1px solid var(--rule);
+  /* 章节标题必须与后续内容同页，避免孤立在页底 */
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.chapter p {
+  margin: 0 0 5mm;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* 首段缩进，中文排版惯例 */
+.chapter p.first::first-letter {
+  font-size: 1em;
+}
+
+/* ============ 插图 ============ */
+.illustration {
+  margin: 8mm 0;
+  text-align: center;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.illustration img {
+  /* 章首大图不宜过高，否则容易被推到下一页造成半空白页 */
+  width: 100%;
+  max-height: 78mm;
+  object-fit: cover;
+  border-radius: 2mm;
+  display: block;
+}
+
+.illustration figcaption {
+  font-size: 9pt;
+  color: var(--ink-soft);
+  margin-top: 3mm;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+/* 图右文左的交错版式 */
+.illustration-side {
+  display: flex;
+  gap: 7mm;
+  align-items: flex-start;
+  margin: 9mm 0;
+  page-break-inside: avoid;
+}
+
+.illustration-side img {
+  width: 46%;
+  border-radius: 2mm;
+  flex-shrink: 0;
+}
+
+.illustration-side .text {
+  flex: 1;
+  font-size: 10.5pt;
+  line-height: 1.95;
+}
+
+.illustration-side .text p { margin: 0 0 3mm; }
+
+/* ============ 引文 ============ */
+.pull-quote {
+  margin: 9mm 0;
+  padding: 6mm 0 6mm 8mm;
+  border-left: 3px solid var(--accent-warm);
+  font-size: 12.5pt;
+  line-height: 1.95;
+  color: var(--ink);
+  page-break-inside: avoid;
+}
+
+.pull-quote .source {
+  display: block;
+  margin-top: 3mm;
+  font-size: 9pt;
+  color: var(--ink-soft);
+  font-style: normal;
+}
+
+/* ============ 数据小块 ============ */
+.fact {
+  background: var(--paper-deep);
+  padding: 6mm 7mm;
+  border-radius: 2mm;
+  margin: 8mm 0;
+  page-break-inside: avoid;
+}
+
+.fact dt {
+  font-size: 10pt;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 1mm;
+}
+
+.fact dd {
+  margin: 0 0 3mm;
+  font-size: 11pt;
+  line-height: 1.9;
+}
+
+.fact dd:last-child { margin-bottom: 0; }
+
+/* ============ 分隔 ============ */
+.divider {
+  width: 30mm;
+  height: 2px;
+  background: var(--accent-warm);
+  border: none;
+  margin: 12mm auto;
+  page-break-inside: avoid;
+}
+
+/* ============ 结尾 ============ */
+.colophon {
+  page-break-before: always;
+  margin-top: 20mm;
+  padding-top: 8mm;
+  border-top: 1px solid var(--rule);
+  font-size: 9.5pt;
+  color: var(--ink-soft);
+  line-height: 2.1;
+}
+
+/* ============ 页眉 ============ */
+.running-head {
+  position: running(headerText);
+  font-size: 8pt;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+}

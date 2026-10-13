@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+package-lock.json
+
+# 本 skill 的运行产物（不要提交）
+output/
+out/
+*.srt
+*_转写_*.txt
+*_精校*.txt
+book.json
+*.pdf
+book_images/
+_p*.png
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# whisper 模型缓存（体积大，不要提交）
+.cache/
+models--Systran--faster-whisper-*/
+
+# 但保留目录结构占位
+!assets/.gitkeep
+!references/.gitkeep
+!scripts/.gitkeep
